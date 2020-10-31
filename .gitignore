@@ -25,5 +25,7 @@ hs_err_pid*
 #Francis Starr (Oct31) added these to ignore:
 .gradle
 .idea
-loca.properties
+local.properties
 build
+gradlew
+gradlew.bat
