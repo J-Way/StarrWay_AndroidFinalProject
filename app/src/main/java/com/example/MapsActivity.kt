@@ -1,7 +1,8 @@
-package com.example.starrway_androidfinalproject
+package com.example
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.starrway_androidfinalproject.R
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
