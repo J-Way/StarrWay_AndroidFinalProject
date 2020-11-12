@@ -49,32 +49,29 @@
         android:lines="3"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:scrollHorizontally="false"
-        android:layout_below="@+id/tvDescription"
-        />
+        android:layout_below="@+id/tvDescription" />
     <Button
-        android:id="@+id/btnSnap"
+        android:id="@+id/btnCamera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
-        android:text="Snap Photo"
-        android:layout_below="@+id/etDescription"
-        />
+        android:text="Take Photo"
+        android:layout_below="@+id/etDescription" />
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Date:"
         android:textSize="25dp"
-        android:layout_below="@+id/btnSnap"/>
+        android:layout_below="@+id/btnCamera"/>
     <EditText
         android:id="@+id/etDate"
         android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:layout_below="@+id/btnSnap"
-        />
+        android:layout_below="@+id/btnCamera" />
     <Button
         android:id="@+id/btnCancel"
         android:layout_width="match_parent"
