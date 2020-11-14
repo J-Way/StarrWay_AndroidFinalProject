@@ -17,7 +17,8 @@
         android:layout_height="45dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:hint="required"/>
+        android:hint="required"
+        android:background="@drawable/common_google_signin_btn_text_light_normal_background"/>
     <TextView
         android:id="@+id/tvGPS"
         android:layout_width="match_parent"
@@ -40,7 +41,7 @@
         android:id="@+id/etDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null"
+        android:background="@drawable/common_google_signin_btn_text_light_normal_background"
         android:gravity="top|left"
         android:inputType="textMultiLine"
         android:overScrollMode="always"
@@ -71,7 +72,8 @@
         android:layout_height="45dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:layout_below="@+id/btnCamera" />
+        android:layout_below="@+id/btnCamera"
+        android:background="@drawable/common_google_signin_btn_text_light_normal_background"/>
     <Button
         android:id="@+id/btnCancel"
         android:layout_width="match_parent"
