@@ -11,7 +11,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
-import com.example.starrway_androidfinalproject.R
+import com.example.R
 
 class UserFormAdapter(private val context: Activity)
     :ArrayAdapter<String>(context,R.layout.form_view, arrayOf("Placeholder")){

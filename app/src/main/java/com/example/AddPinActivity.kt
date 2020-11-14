@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import com.example.starrway_androidfinalproject.R
+import com.example.R
 import kotlinx.android.synthetic.main.activity_add_pin.*
 
 

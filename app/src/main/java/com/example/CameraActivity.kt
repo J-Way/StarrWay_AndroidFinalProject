@@ -15,7 +15,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.starrway_androidfinalproject.R
+import com.example.R
 import java.io.File
 import java.lang.Exception
 import java.text.SimpleDateFormat
