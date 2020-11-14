@@ -13,7 +13,8 @@ class AddPinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pin)
         setTitle("Add Pin")
-        addPinView.adapter=UserFormAdapter(this)
+        val x=Pin()
+        addPinView.adapter=UserFormAdapter(this, x)
 
     }
 
