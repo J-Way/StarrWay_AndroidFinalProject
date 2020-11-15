@@ -83,4 +83,12 @@
         android:text="Cancel"
         android:layout_below="@+id/tvDate"
         />
+    <TextView
+        android:id="@+id/tvPhotoPath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Placeholder"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/btnCancel"
+        android:textSize="25dp" />
 </RelativeLayout>

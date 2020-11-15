@@ -107,9 +107,12 @@ class CameraActivity : AppCompatActivity() {
                     val msg="Photo capture succeeded "+ savedUri.toString()
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG,savedUri.toString())
+                    MapsActivity.activePin.photoPath=savedUri.toString()
+                    onBackPressed()
                 }
             }
         )
+
     }
     fun cancelPhoto(view: View){
         onBackPressed()

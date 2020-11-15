@@ -11,9 +11,10 @@ class Pin {
     var date: String=LocalDate.now().toString()
     var photoPath:String=""
     constructor(){}
-    constructor(title:String, description:String, date: String){
+    constructor(title:String, description:String, date: String, photoPath: String){
         this.title=title
         this.description=description
         this.date=date
+        this.photoPath=photoPath
     }
 }

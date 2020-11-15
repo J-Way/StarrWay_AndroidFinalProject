@@ -25,6 +25,9 @@ class UserFormAdapter(private val context: Activity, private val x:Pin)
         val etTitle=rowView.findViewById(R.id.etTitle) as EditText
         etTitle.setText(x.title)
 
+        val tvPhotoPath=rowView.findViewById(R.id.tvPhotoPath) as TextView
+        tvPhotoPath.setText(x.photoPath)
+
         val btnCancel=rowView.findViewById(R.id.btnCancel) as Button
         btnCancel.setOnClickListener {
             MapsActivity.activePin=Pin()
@@ -34,7 +37,7 @@ class UserFormAdapter(private val context: Activity, private val x:Pin)
 
         val btnCamera=rowView.findViewById(R.id.btnCamera) as Button
         btnCamera.setOnClickListener {
-            MapsActivity.activePin=Pin(etTitle.text.toString(), etDescription.text.toString(), etDate.text.toString())
+            MapsActivity.activePin=Pin(etTitle.text.toString(), etDescription.text.toString(), etDate.text.toString(), tvPhotoPath.text.toString())
             val intent = Intent(context, CameraActivity::class.java)
             context.startActivity(intent)
         }
