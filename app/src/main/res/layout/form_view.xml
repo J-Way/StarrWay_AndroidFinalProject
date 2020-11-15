@@ -53,20 +53,22 @@
         android:layout_below="@+id/tvDescription" />
     <Button
         android:id="@+id/btnCamera"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_centerHorizontal="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="60dp"
+        android:layout_alignParentLeft="true"
         android:text="Take Photo"
         android:layout_below="@+id/etDescription" />
     <ImageView
         android:id="@+id/imgPath"
-        android:layout_below="@id/btnCamera"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
+        android:layout_below="@+id/etDescription"
+        android:layout_width="113dp"
         android:rotation="90"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="200dp"
+        android:layout_marginRight="50dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/empty"/>
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="match_parent"
