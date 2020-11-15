@@ -9,7 +9,7 @@ class Pin {
     var description:String=""
     @RequiresApi(Build.VERSION_CODES.O)
     var date: String=LocalDate.now().toString()
-    var photoPath:String=""
+    var photoPath:String="empty"
     constructor(){}
     constructor(title:String, description:String, date: String, photoPath: String){
         this.title=title

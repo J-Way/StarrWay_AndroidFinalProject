@@ -59,20 +59,28 @@
         android:layout_centerHorizontal="true"
         android:text="Take Photo"
         android:layout_below="@+id/etDescription" />
+    <ImageView
+        android:id="@+id/imgPath"
+        android:layout_below="@id/btnCamera"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:rotation="90"
+        android:layout_centerHorizontal="true" />
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Date:"
         android:textSize="25dp"
-        android:layout_below="@+id/btnCamera"/>
+        android:layout_below="@+id/imgPath"/>
     <EditText
         android:id="@+id/etDate"
         android:layout_width="300dp"
         android:layout_height="45dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:layout_below="@+id/btnCamera"
+        android:layout_below="@+id/imgPath"
         android:background="@drawable/common_google_signin_btn_text_light_normal_background"/>
     <Button
         android:id="@+id/btnCancel"
@@ -87,8 +95,7 @@
         android:id="@+id/tvPhotoPath"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Placeholder"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/btnCancel"
-        android:textSize="25dp" />
+        android:textSize="10dp" />
 </RelativeLayout>

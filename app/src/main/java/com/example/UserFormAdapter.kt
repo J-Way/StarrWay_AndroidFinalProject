@@ -2,6 +2,9 @@ package com.example
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.Image
 import android.os.Bundle
 import android.text.Layout
 import android.view.View
@@ -9,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat.startActivity
 import com.example.R
+import java.io.File
 import java.time.LocalDateTime
 class UserFormAdapter(private val context: Activity, private val x:Pin)
     :ArrayAdapter<String>(context,R.layout.form_view, arrayOf("Placeholder")){
@@ -27,6 +31,19 @@ class UserFormAdapter(private val context: Activity, private val x:Pin)
 
         val tvPhotoPath=rowView.findViewById(R.id.tvPhotoPath) as TextView
         tvPhotoPath.setText(x.photoPath)
+
+        val imgPath=rowView.findViewById(R.id.imgPath) as ImageView
+        val minLength=7
+        if (tvPhotoPath.text.toString().length>=minLength){
+            var imgFile= File(tvPhotoPath.text.toString().substring(minLength))
+            if (imgFile.exists()){
+                var b: Bitmap = BitmapFactory.decodeFile(imgFile.toString())
+                imgPath.setImageBitmap(b)
+            }
+        }
+
+
+
 
         val btnCancel=rowView.findViewById(R.id.btnCancel) as Button
         btnCancel.setOnClickListener {
