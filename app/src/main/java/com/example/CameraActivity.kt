@@ -1,13 +1,14 @@
 package com.example
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -15,10 +16,8 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.R
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.File
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -37,6 +36,7 @@ class CameraActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
+        setTitle(MapsActivity.activePin.title+"|"+ MapsActivity.activePin.description+"|"+MapsActivity.activePin.date)
         if(allPermissionsGranted()){
             startCamera()
         }
@@ -46,6 +46,12 @@ class CameraActivity : AppCompatActivity() {
         outputDirectory=getOutputDirectory()
         cameraExecutor= Executors.newSingleThreadExecutor()
     }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, AddPinActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun allPermissionsGranted()= REQUIRED_PERMISSIONS.all{
         ContextCompat.checkSelfPermission(baseContext, it)== PackageManager.PERMISSION_GRANTED
     }
@@ -104,6 +110,9 @@ class CameraActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+    fun cancelPhoto(view: View){
+        onBackPressed()
     }
     override fun onDestroy() {
         super.onDestroy()
