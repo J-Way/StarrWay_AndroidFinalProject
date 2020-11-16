@@ -42,9 +42,6 @@ class UserFormAdapter(private val context: Activity, private val x:Pin)
             }
         }
 
-
-
-
         val btnCancel=rowView.findViewById(R.id.btnCancel) as Button
         btnCancel.setOnClickListener {
             MapsActivity.activePin=Pin()
