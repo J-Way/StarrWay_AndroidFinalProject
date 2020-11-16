@@ -19,12 +19,7 @@ class AddPinActivity : AppCompatActivity() {
         setTitle("Add Pin")
         addPinView.adapter=UserFormAdapter(this, MapsActivity.activePin)
 
-        val etTitle=findViewById(R.id.etTitle) as EditText
-
-        /*btnAddPin.setOnClickListener {
-            Toast.makeText(this,etTitle.text.toString(), Toast.LENGTH_LONG).show()
-
-        }*/
+        //val etTitle=findViewById(R.id.etTitle) as EditText
     }
 
 }
