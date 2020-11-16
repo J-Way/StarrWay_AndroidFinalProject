@@ -5,24 +5,23 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.starrway_androidfinalproject.R
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException
-import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.location.places.ui.PlacePicker
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -50,7 +49,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
         private const val REQUEST_CHECK_SETTINGS = 2
-        private const val PLACE_PICKER_REQUEST = 3
+        private const val AUTOCOMPLETE_REQUEST_CODE  = 3
 
     }
 
@@ -64,7 +63,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
 
         map.isMyLocationEnabled = true
-        map.mapType = GoogleMap.MAP_TYPE_TERRAIN
+        map.mapType = GoogleMap.MAP_TYPE_NORMAL
         fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
             // Got last known location. In some rare situations this can be null.
             if (location != null) {
@@ -122,18 +121,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
-    private fun loadPlacePicker() {
-        val builder = PlacePicker.IntentBuilder()
-
-        try {
-            startActivityForResult(builder.build(this@MapsActivity), PLACE_PICKER_REQUEST)
-        } catch (e: GooglePlayServicesRepairableException) {
-            e.printStackTrace()
-        } catch (e: GooglePlayServicesNotAvailableException) {
-            e.printStackTrace()
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -143,17 +130,32 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 startLocationUpdates()
             }
         }
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    data?.let {
+                        val place = Autocomplete.getPlaceFromIntent(data)
+                        Log.i("test", "${place.name}")
 
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                val place = PlacePicker.getPlace(this, data)
-                var addressText = place.name.toString()
-                addressText += "\n" + place.address.toString()
-
-                placeMarkerOnMap(place.latLng)
+                        // this convolution was not my creation, IDE suggestion
+                        place.latLng?.let { it1 -> placeMarkerOnMap(it1, BitmapDescriptorFactory.HUE_RED) }
+                    }
+                }
+                AutocompleteActivity.RESULT_ERROR -> {
+                    // TODO: Handle the error.
+                    data?.let {
+                        val status = Autocomplete.getStatusFromIntent(data)
+                        //Log.i(TAG, status.statusMessage)
+                    }
+                }
+                Activity.RESULT_CANCELED -> {
+                    // The user canceled the operation.
+                }
             }
+            return
         }
-
+        // not sure we need the super, was just in example
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onPause() {
@@ -169,15 +171,31 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
-    private fun placeMarkerOnMap(location: LatLng) {
+    fun placeMarkerOnMap(location: LatLng) {
         val markerOptions = MarkerOptions().position(location)
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+        map.addMarker(markerOptions)
+    }
+
+    fun placeMarkerOnMap(location: LatLng, colour: Float){
+        val markerOptions = MarkerOptions().position(location)
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(colour))
         map.addMarker(markerOptions)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
+
+        // Initialize the SDK
+        Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
+
+        //
+        // KEEP THIS UNTIL CERTAIN IT CAN BE SAFELY REMOVED
+        //
+        // Create a new PlacesClient instance
+        val placesClient = Places.createClient(this)
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -185,16 +203,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         val fabSearch = findViewById<FloatingActionButton>(R.id.fabSearch)
         fabSearch.setOnClickListener {
-            loadPlacePicker()
-        }
-        val fabAddPin = findViewById<FloatingActionButton>(R.id.fabAddPin)
-        fabAddPin.setOnClickListener {
-            addPin()
-        }
+            // Set the fields to specify which types of place data to
+            // return after the user has made a selection.
+            val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)
 
+            // Start the autocomplete intent.
+            val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this)
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+        }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+
+        // not sure what this is used for
+        // careful when deleting however
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult?) {
                 super.onLocationResult(p0)
@@ -202,11 +225,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 if (p0 != null) {
                     lastLocation = p0.lastLocation
                 }
-                placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
+                //placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
             }
         }
         createLocationRequest()
-
     }
 
     /**
