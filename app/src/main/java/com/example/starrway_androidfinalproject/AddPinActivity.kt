@@ -1,4 +1,4 @@
-package com.example
+package com.example.starrway_androidfinalproject
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -6,13 +6,11 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.example.R
 import kotlinx.android.synthetic.main.activity_add_pin.*
 import java.io.File
-import java.time.LocalDate
 
 
 class AddPinActivity : AppCompatActivity() {
@@ -36,13 +34,20 @@ class AddPinActivity : AppCompatActivity() {
             }
         }
         btnCancel.setOnClickListener {
-            MapsActivity.activePin=Pin()
+            MapsActivity.activePin =
+                Pin()
             val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
 
         btnCamera.setOnClickListener {
-            MapsActivity.activePin=Pin(etTitle.text.toString(), etDescription.text.toString(), etDate.text.toString(), tvPhotoPath.text.toString())
+            MapsActivity.activePin =
+                Pin(
+                    etTitle.text.toString(),
+                    etDescription.text.toString(),
+                    etDate.text.toString(),
+                    tvPhotoPath.text.toString()
+                )
             val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
         }

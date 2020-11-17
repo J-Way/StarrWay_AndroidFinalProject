@@ -1,4 +1,4 @@
-package com.example
+package com.example.starrway_androidfinalproject
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.lang.Exception
