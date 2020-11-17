@@ -12,6 +12,10 @@ import androidx.core.app.ActivityCompat
 import com.example.starrway_androidfinalproject.R
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+
+// might cause issue
+import com.example.R
+
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -124,6 +128,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+
         if (requestCode == REQUEST_CHECK_SETTINGS) {
             if (resultCode == Activity.RESULT_OK) {
                 locationUpdateState = true
@@ -181,6 +186,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val markerOptions = MarkerOptions().position(location)
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(colour))
         map.addMarker(markerOptions)
+    }
+
+    // brought in through merge
+    private lateinit var mMap: GoogleMap
+    companion object{
+        public var activePin: Pin=Pin()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

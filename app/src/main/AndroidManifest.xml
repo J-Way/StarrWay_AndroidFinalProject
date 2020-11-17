@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.starrway_androidfinalproject">
+    package="com.example">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -10,6 +10,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <uses-feature android:name="android.hardware.camera.any" />
+
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- Add read permission -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Add camera permission -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,8 +22,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.CameraActivity"></activity>
-        <activity android:name="com.example.AddPinActivity">
+        <activity android:name=".CameraActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        </activity>
+        <activity android:name=".AddPinActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +46,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.example.MapsActivity"
+            android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
     </application>
 
