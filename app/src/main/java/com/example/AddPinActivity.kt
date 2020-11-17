@@ -3,16 +3,20 @@ package com.example
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import com.example.R
 import kotlinx.android.synthetic.main.activity_add_pin.*
 import java.io.File
+import java.time.LocalDate
 
 
 class AddPinActivity : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pin)
@@ -41,6 +45,18 @@ class AddPinActivity : AppCompatActivity() {
             MapsActivity.activePin=Pin(etTitle.text.toString(), etDescription.text.toString(), etDate.text.toString(), tvPhotoPath.text.toString())
             val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
+        }
+
+        btnAddPin.setOnClickListener {
+            var message:String
+            MapsActivity.activePin.date=etDate.text.toString()
+            if (etTitle.text.toString().trim().equals("")){
+                message="Title is blank. Please try again"
+            }
+            else{
+                message="DAT IS GOOD!"
+            }
+            Toast.makeText(this,message, Toast.LENGTH_LONG).show()
         }
     }
 
