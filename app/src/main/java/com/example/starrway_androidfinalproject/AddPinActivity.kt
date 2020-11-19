@@ -15,10 +15,14 @@ import java.io.File
 
 class AddPinActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
+    val dbHandler:DbasHandler=DbasHandler(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pin)
-        setTitle("Add Pin")
+        dbHandler.DeleteAll()
+        dbHandler.addTester("a")
+        dbHandler.addTester("b")
+        setTitle("Add Pin "+  dbHandler.viewTester().size)
 
         etDate.setText( MapsActivity.activePin.date)
         etDescription.setText(MapsActivity.activePin.description)
