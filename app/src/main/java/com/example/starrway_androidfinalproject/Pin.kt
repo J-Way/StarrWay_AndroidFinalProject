@@ -12,7 +12,7 @@ class Pin {
     var date: String=LocalDate.now().toString()
     var photoPath:String="empty"
 
-    lateinit var latLng:LatLng
+    var latLng:LatLng = LatLng(-400.0,-400.0)
 
     constructor(){}
     constructor(title:String, description:String, date: String, photoPath: String){

@@ -1,6 +1,8 @@
 package com.example.starrway_androidfinalproject
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -36,21 +38,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     /*TODO
     - provide more comments
     - check that location and network permission are given / accessible
-    - add pin by current location
-    - add pin by searched location
-    - add context / disability info to UI elements
     - add strings to resource file
     - load pins from db
+    - have a failsafe point if location disabled
      */
 
 
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
-
     private lateinit var locationCallback: LocationCallback
-
     private lateinit var locationRequest: LocationRequest
+    private lateinit var alertBuilder: AlertDialog.Builder
     private var locationUpdateState = false
 
     companion object {
@@ -59,7 +58,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         private const val AUTOCOMPLETE_REQUEST_CODE  = 3
         public var activePin: Pin =
             Pin()
-
     }
 
     // brought in through merge
@@ -139,8 +137,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-
         if (requestCode == REQUEST_CHECK_SETTINGS) {
             if (resultCode == Activity.RESULT_OK) {
                 locationUpdateState = true
@@ -254,7 +250,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
 
         val fabAddPin = findViewById<FloatingActionButton>(R.id.fabAddPin)
         fabAddPin.setOnClickListener{
+            alertBuilder = AlertDialog.Builder(this)
+            alertBuilder.setTitle("Add Pin?")
+            alertBuilder.setPositiveButton("Yes", {dialog, which -> addPin(which)})
+            alertBuilder.setNegativeButton("No", { dialog, which -> addPin(which)})
+            alertBuilder.setMessage("Would you like to add this location to your records?")
 
+            alertBuilder.show()
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -292,8 +294,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         setUpMap()
     }
 
-    fun addPin(){
-        // change activites with prompt here
+    fun addPin(choice : Int){
+        // add a pin
+        if(choice == -1){
+            val intent = Intent(this, AddPinActivity::class.java)
+            startActivity(intent)
+        }
+        // have a toast if "no" selected?
     }
 
     override fun onMarkerClick(p0: Marker?) = false

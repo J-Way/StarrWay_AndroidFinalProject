@@ -24,6 +24,7 @@ class AddPinActivity : AppCompatActivity() {
         etDescription.setText(MapsActivity.activePin.description)
         etTitle.setText( MapsActivity.activePin.title)
         tvPhotoPath.setText(MapsActivity.activePin.photoPath)
+        tvGPS.text = (MapsActivity.activePin.latLng.toString())
 
         val minLength=7
         if (tvPhotoPath.text.toString().length>=minLength){
