@@ -15,10 +15,12 @@ import java.io.File
 
 class AddPinActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
+    val dbHandler:DbasHandler=DbasHandler(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pin)
-        setTitle("Add Pin")
+
+        setTitle("Add Pin Use Form")
 
         etDate.setText( MapsActivity.activePin.date)
         etDescription.setText(MapsActivity.activePin.description)
@@ -57,11 +59,18 @@ class AddPinActivity : AppCompatActivity() {
             MapsActivity.activePin.date=etDate.text.toString()
             if (etTitle.text.toString().trim().equals("")){
                 message="Title is blank. Please try again"
+                Toast.makeText(this,message, Toast.LENGTH_LONG).show()
             }
             else{
-                message="DAT IS GOOD!"
+                val x=Pin()
+                x.photoPath=tvPhotoPath.text.toString()
+                x.title=etTitle.text.toString()
+                x.description=etDescription.text.toString()
+                x.date=etDate.text.toString()
+                dbHandler.addPin(x)
+                btnCancel.performClick()
             }
-            Toast.makeText(this,message, Toast.LENGTH_LONG).show()
+
         }
     }
 
