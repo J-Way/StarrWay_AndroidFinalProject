@@ -11,6 +11,7 @@ class Pin {
     @RequiresApi(Build.VERSION_CODES.O)
     var date: String=LocalDate.now().toString()
     var photoPath:String="empty"
+    var latLng:LatLng = LatLng(-400.0,-400.0)
     var latitude:Double=0.0
     var longitude:Double=0.0
     var pk:Int=-1
