@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import kotlinx.android.synthetic.main.activity_add_pin.*
 
 class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
     companion object{
@@ -65,8 +66,8 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         db.execSQL("delete from " + MY_TABLE)
         db.close()
     }
-    fun viewTester():List<String>{
-        val giftList:ArrayList<String> =ArrayList<String>()
+    fun viewAll():List<Pin>{
+        val result:ArrayList<Pin> =ArrayList<Pin>()
         val db=this.writableDatabase
         val selectQuery="Select * FROM $MY_TABLE"
         var cursor: Cursor?=null
@@ -77,20 +78,20 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
             db.execSQL(selectQuery)
             return ArrayList()
         }
-        var name=""
-        var description=""
-        var path=""
         if (cursor.moveToFirst()){
             do{
-
-                name=cursor.getString(cursor.getColumnIndex(TITLE_NAME))
-                description=cursor.getString(cursor.getColumnIndex(DESCRIPTION_NAME))
-                path=cursor.getString(cursor.getColumnIndex(PK_NAME))
-
-                giftList.add(path)
+                val x=Pin()
+                x.date=cursor.getString(cursor.getColumnIndex(DATE_NAME))
+                x.description=cursor.getString(cursor.getColumnIndex(DESCRIPTION_NAME))
+                x.title=cursor.getString(cursor.getColumnIndex(TITLE_NAME))
+                x.photoPath=cursor.getString(cursor.getColumnIndex(PATH_NAME))
+                x.pk=cursor.getInt(cursor.getColumnIndex(PK_NAME))
+                x.longitude=cursor.getDouble(cursor.getColumnIndex(LONGITUDE_NAME))
+                x.latitude=cursor.getDouble(cursor.getColumnIndex(LATITUDE_NAME))
+                result.add(x)
             }while (cursor.moveToNext())
 
         }
-        return giftList
+        return result
     }
 }

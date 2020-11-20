@@ -196,7 +196,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     // brought in through merge
     private lateinit var mMap: GoogleMap
 
-
+    val dbHandler:DbasHandler=DbasHandler(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
@@ -245,6 +245,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
         }
         createLocationRequest()
+        var pinsList=dbHandler.viewAll()
     }
 
     /**

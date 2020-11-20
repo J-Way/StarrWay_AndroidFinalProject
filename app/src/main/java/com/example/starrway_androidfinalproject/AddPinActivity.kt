@@ -20,7 +20,7 @@ class AddPinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pin)
 
-        setTitle("Add Pin "+  dbHandler.viewTester().size)
+        setTitle("Add Pin Use Form")
 
         etDate.setText( MapsActivity.activePin.date)
         etDescription.setText(MapsActivity.activePin.description)
