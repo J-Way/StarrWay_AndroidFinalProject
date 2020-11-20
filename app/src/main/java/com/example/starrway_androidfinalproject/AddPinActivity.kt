@@ -67,6 +67,8 @@ class AddPinActivity : AppCompatActivity() {
                 x.title=etTitle.text.toString()
                 x.description=etDescription.text.toString()
                 x.date=etDate.text.toString()
+                dbHandler.addPin(x)
+                btnCancel.performClick()
             }
 
         }
