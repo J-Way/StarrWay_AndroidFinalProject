@@ -15,12 +15,17 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         private val TITLE_NAME ="title"
         private val DESCRIPTION_NAME ="description"
         private val PK_NAME="pk"
+        private val LATITUDE_NAME="latitude"
+        private val LONGITUDE_NAME="longitude"
+        private val PATH_NAME="path"
+        private val DATE_NAME="date"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
 
         val CREATE_TABLE=("CREATE TABLE " + MY_TABLE +"("
-                + PK_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TITLE_NAME+ " TEXT, "+ DESCRIPTION_NAME+ " TEXT)")
+                + PK_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TITLE_NAME+ " TEXT, "+ DESCRIPTION_NAME+ " TEXT, "
+                + LATITUDE_NAME + " REAL, "+ LONGITUDE_NAME + " REAL, "+ DATE_NAME + " TEXT, "+ PATH_NAME+ " TEXT)")
         db?.execSQL(CREATE_TABLE)
 
     }
@@ -34,6 +39,10 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         val ContentValues= ContentValues()
         ContentValues.put(TITLE_NAME, "title placeholder")
         ContentValues.put(DESCRIPTION_NAME, "description placeholder")
+        ContentValues.put(DATE_NAME, "date placeholder")
+        ContentValues.put(PATH_NAME, "path placeholder")
+        ContentValues.put(LATITUDE_NAME, 43.469)
+        ContentValues.put(LONGITUDE_NAME, -79.699)
         val success=db.insert(MY_TABLE,null,ContentValues)
         db.close()
         return success
