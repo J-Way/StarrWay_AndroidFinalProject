@@ -216,6 +216,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         return false
     }
 
+      // this is out of place
+    val dbHandler:DbasHandler=DbasHandler(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
@@ -274,6 +277,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
             }
         }
         createLocationRequest()
+        var pinsList=dbHandler.viewAll()
     }
 
     /**
