@@ -19,9 +19,9 @@ class AddPinActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pin)
-        dbHandler.DeleteAll()
-        dbHandler.addTester(1)
-        dbHandler.addTester(2)
+        //dbHandler.DeleteAll()
+        dbHandler.addTester()
+        dbHandler.addTester()
         setTitle("Add Pin "+  dbHandler.viewTester().size)
 
         etDate.setText( MapsActivity.activePin.date)

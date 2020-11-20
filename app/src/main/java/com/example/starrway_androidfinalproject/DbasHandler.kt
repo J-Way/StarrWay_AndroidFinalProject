@@ -9,18 +9,18 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
     companion object{
-        private val DATABASE_NAME="StarrDbas"
+        private val DATABASE_NAME="StarrWayDbas"
         private val DATABASE_VERSION =1
-        private val MY_TABLE="StarrTable"
-        private val KEY_NAME ="name"
-        private val KEY_DESCRIPTION ="description"
-        private val KEY_PATH="pk"
+        private val MY_TABLE="AddedPins"
+        private val TITLE_NAME ="title"
+        private val DESCRIPTION_NAME ="description"
+        private val PK_NAME="pk"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
 
         val CREATE_TABLE=("CREATE TABLE " + MY_TABLE +"("
-                + KEY_PATH + " INTEGER PRIMARY KEY, " + KEY_NAME+ " TEXT, "+ KEY_DESCRIPTION+ " TEXT)")
+                + PK_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TITLE_NAME+ " TEXT, "+ DESCRIPTION_NAME+ " TEXT)")
         db?.execSQL(CREATE_TABLE)
 
     }
@@ -29,12 +29,11 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         db!!.execSQL("DROP TABLE IF EXISTS" + MY_TABLE)
         onCreate(db)
     }
-    fun addTester(keyVal:Int):Long{
+    fun addTester():Long{
         val db=this.writableDatabase
         val ContentValues= ContentValues()
-        ContentValues.put(KEY_NAME, "a")
-        ContentValues.put(KEY_DESCRIPTION, "a")
-        ContentValues.put(KEY_PATH, keyVal)
+        ContentValues.put(TITLE_NAME, "title placeholder")
+        ContentValues.put(DESCRIPTION_NAME, "description placeholder")
         val success=db.insert(MY_TABLE,null,ContentValues)
         db.close()
         return success
@@ -62,9 +61,9 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         if (cursor.moveToFirst()){
             do{
 
-                name=cursor.getString(cursor.getColumnIndex(KEY_NAME))
-                description=cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION))
-                path=cursor.getString(cursor.getColumnIndex(KEY_PATH))
+                name=cursor.getString(cursor.getColumnIndex(TITLE_NAME))
+                description=cursor.getString(cursor.getColumnIndex(DESCRIPTION_NAME))
+                path=cursor.getString(cursor.getColumnIndex(PK_NAME))
 
                 giftList.add(path)
             }while (cursor.moveToNext())
