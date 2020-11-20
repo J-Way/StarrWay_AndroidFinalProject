@@ -1,6 +1,7 @@
 package com.example.starrway_androidfinalproject
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.google.android.gms.maps.model.LatLng
 import java.lang.Exception
 import java.time.LocalDate
 
@@ -10,6 +11,9 @@ class Pin {
     @RequiresApi(Build.VERSION_CODES.O)
     var date: String=LocalDate.now().toString()
     var photoPath:String="empty"
+
+    lateinit var latLng:LatLng
+
     constructor(){}
     constructor(title:String, description:String, date: String, photoPath: String){
         this.title=title

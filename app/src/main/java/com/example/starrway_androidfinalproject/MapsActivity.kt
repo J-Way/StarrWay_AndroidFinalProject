@@ -188,16 +188,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         }
     }
 
-    fun placeMarkerOnMap(location: LatLng) {
-        val markerOptions = MarkerOptions().position(location)
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-        map.addMarker(markerOptions)
-    }
-
     fun placeMarkerOnMap(location: LatLng, colour: Float){
         val markerOptions = MarkerOptions().position(location)
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(colour))
         map.addMarker(markerOptions)
+
+        activePin.latLng = location
     }
 
     override fun onMyLocationButtonClick(): Boolean {
