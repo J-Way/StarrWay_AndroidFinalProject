@@ -34,6 +34,19 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         db!!.execSQL("DROP TABLE IF EXISTS" + MY_TABLE)
         onCreate(db)
     }
+    fun addPin(x:Pin):Long{
+        val db=this.writableDatabase
+        val ContentValues= ContentValues()
+        ContentValues.put(TITLE_NAME, x.title)
+        ContentValues.put(DESCRIPTION_NAME, x.description)
+        ContentValues.put(DATE_NAME, x.date)
+        ContentValues.put(PATH_NAME, x.photoPath)
+        ContentValues.put(LATITUDE_NAME, 43.469)
+        ContentValues.put(LONGITUDE_NAME, -79.699)
+        val success=db.insert(MY_TABLE,null,ContentValues)
+        db.close()
+        return success
+    }
     fun addTester():Long{
         val db=this.writableDatabase
         val ContentValues= ContentValues()
