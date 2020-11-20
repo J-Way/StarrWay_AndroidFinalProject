@@ -19,16 +19,16 @@
         android:layout_marginRight="10dp"
         android:hint="required"
         android:background="@drawable/common_google_signin_btn_text_light_normal_background"/>
+
     <TextView
         android:id="@+id/tvGPS"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
-        android:text="GPS = (43.469, -79.699)"
-        android:layout_below="@+id/tvTitle"
-        android:textSize="20dp"
-        />
+        android:text="GPS = (lat, lng)"
+        android:textSize="20dp" />
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="match_parent"

@@ -1,12 +1,16 @@
 package com.example.starrway_androidfinalproject
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.common.api.ResolvableApiException
@@ -26,27 +30,26 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButtonClickListener,
+    GoogleMap.OnMarkerClickListener {
 
     /*TODO
     - provide more comments
     - check that location and network permission are given / accessible
-    - add pin by current location
-    - add pin by searched location
-    - add context / disability info to UI elements
     - add strings to resource file
     - load pins from db
+    - have a failsafe point if location disabled
      */
 
 
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
-
     private lateinit var locationCallback: LocationCallback
-
     private lateinit var locationRequest: LocationRequest
+    private lateinit var alertBuilder: AlertDialog.Builder
     private var locationUpdateState = false
 
     companion object {
@@ -55,8 +58,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         private const val AUTOCOMPLETE_REQUEST_CODE  = 3
         public var activePin: Pin =
             Pin()
-
     }
+
+    // brought in through merge
+    private lateinit var mMap: GoogleMap
 
     private fun setUpMap() {
         if (ActivityCompat.checkSelfPermission(this,
@@ -76,7 +81,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
-                placeMarkerOnMap(currentLatLng)
+                //placeMarkerOnMap(currentLatLng)
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
         }
@@ -119,7 +124,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                 // by showing the user a dialog.
                 try {
                     // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
+                    // and check the result in onActivityResult().pl
                     e.startResolutionForResult(this@MapsActivity,
                         REQUEST_CHECK_SETTINGS
                     )
@@ -132,8 +137,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-
         if (requestCode == REQUEST_CHECK_SETTINGS) {
             if (resultCode == Activity.RESULT_OK) {
                 locationUpdateState = true
@@ -181,22 +184,41 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
-    fun placeMarkerOnMap(location: LatLng) {
-        val markerOptions = MarkerOptions().position(location)
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-        map.addMarker(markerOptions)
-    }
-
     fun placeMarkerOnMap(location: LatLng, colour: Float){
         val markerOptions = MarkerOptions().position(location)
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(colour))
         map.addMarker(markerOptions)
+
+        // this is a tad inelegant, resolve later?
+        activePin.latLng = location
     }
 
-    // brought in through merge
-    private lateinit var mMap: GoogleMap
+    override fun onMyLocationButtonClick(): Boolean {
+        // permission check was required, find better solution later
+        if (ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            return false
+        }
 
+        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
+            // Got last known location. In some rare situations this can be null.
+            if (location != null) {
+                lastLocation = location
+                val currentLatLng = LatLng(location.latitude, location.longitude)
+                placeMarkerOnMap(currentLatLng,BitmapDescriptorFactory.HUE_RED)
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+            }
+        }
+        return false
+    }
+
+      // this is out of place
     val dbHandler:DbasHandler=DbasHandler(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
@@ -229,8 +251,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             )
         }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        val fabAddPin = findViewById<FloatingActionButton>(R.id.fabAddPin)
+        fabAddPin.setOnClickListener{
+            alertBuilder = AlertDialog.Builder(this)
+            alertBuilder.setTitle("Add Pin?")
+            alertBuilder.setPositiveButton("Yes", {dialog, which -> addPin(which)})
+            alertBuilder.setNegativeButton("No", { dialog, which -> addPin(which)})
+            alertBuilder.setMessage("Would you like to add this location to your records?")
 
+            alertBuilder.show()
+        }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // not sure what this is used for
         // careful when deleting however
@@ -262,11 +294,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
         map.getUiSettings().setZoomControlsEnabled(true)
         map.setOnMarkerClickListener(this)
+        map.setOnMyLocationButtonClickListener(this)
         setUpMap()
     }
 
-    fun addPin(){
-        // change activites with prompt here
+    fun addPin(choice : Int){
+        // add a pin
+        if(choice == -1){
+            val intent = Intent(this, AddPinActivity::class.java)
+            startActivity(intent)
+        }
+        // have a toast if "no" selected?
     }
 
     override fun onMarkerClick(p0: Marker?) = false
