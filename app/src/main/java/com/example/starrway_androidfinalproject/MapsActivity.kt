@@ -193,10 +193,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(colour))
         map.addMarker(markerOptions)
 
+        // this is a tad inelegant, resolve later?
         activePin.latLng = location
     }
 
     override fun onMyLocationButtonClick(): Boolean {
+        // permission check was required, find better solution later
         if (ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -250,8 +252,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
             )
         }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        val fabAddPin = findViewById<FloatingActionButton>(R.id.fabAddPin)
+        fabAddPin.setOnClickListener{
 
+        }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // not sure what this is used for
         // careful when deleting however
