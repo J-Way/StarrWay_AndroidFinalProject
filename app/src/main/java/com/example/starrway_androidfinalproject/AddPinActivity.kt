@@ -20,8 +20,8 @@ class AddPinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pin)
         dbHandler.DeleteAll()
-        dbHandler.addTester("a")
-        dbHandler.addTester("b")
+        dbHandler.addTester(1)
+        dbHandler.addTester(2)
         setTitle("Add Pin "+  dbHandler.viewTester().size)
 
         etDate.setText( MapsActivity.activePin.date)

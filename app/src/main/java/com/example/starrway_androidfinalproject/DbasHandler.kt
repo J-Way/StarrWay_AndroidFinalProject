@@ -14,13 +14,13 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         private val MY_TABLE="StarrTable"
         private val KEY_NAME ="name"
         private val KEY_DESCRIPTION ="description"
-        private val KEY_PATH="path"
+        private val KEY_PATH="pk"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
 
         val CREATE_TABLE=("CREATE TABLE " + MY_TABLE +"("
-                + KEY_PATH + " TEXT PRIMARY KEY, " + KEY_NAME+ " TEXT, "+ KEY_DESCRIPTION+ " TEXT)")
+                + KEY_PATH + " INTEGER PRIMARY KEY, " + KEY_NAME+ " TEXT, "+ KEY_DESCRIPTION+ " TEXT)")
         db?.execSQL(CREATE_TABLE)
 
     }
@@ -29,11 +29,11 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         db!!.execSQL("DROP TABLE IF EXISTS" + MY_TABLE)
         onCreate(db)
     }
-    fun addTester(keyVal:String):Long{
+    fun addTester(keyVal:Int):Long{
         val db=this.writableDatabase
         val ContentValues= ContentValues()
-        ContentValues.put(KEY_NAME, keyVal)
-        ContentValues.put(KEY_DESCRIPTION, keyVal)
+        ContentValues.put(KEY_NAME, "a")
+        ContentValues.put(KEY_DESCRIPTION, "a")
         ContentValues.put(KEY_PATH, keyVal)
         val success=db.insert(MY_TABLE,null,ContentValues)
         db.close()
