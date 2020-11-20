@@ -22,11 +22,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CameraActivity"
+        <activity android:name=".starrway_androidfinalproject.CameraActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
 
         </activity>
-        <activity android:name=".AddPinActivity">
+        <activity android:name=".starrway_androidfinalproject.AddPinActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +46,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".starrway_androidfinalproject.MapsActivity"
             android:label="@string/title_activity_maps" />
     </application>
 

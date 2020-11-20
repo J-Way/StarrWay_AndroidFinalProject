@@ -1,4 +1,4 @@
-package com.example
+package com.example.starrway_androidfinalproject
 
 import android.Manifest
 import android.content.Intent
@@ -16,6 +16,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.R
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.File
 import java.text.SimpleDateFormat
@@ -36,12 +37,15 @@ class CameraActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
-        setTitle(MapsActivity.activePin.title+"|"+ MapsActivity.activePin.description+"|"+MapsActivity.activePin.date)
+        setTitle(MapsActivity.activePin.title+"|"+ MapsActivity.activePin.description+"|"+ MapsActivity.activePin.date)
         if(allPermissionsGranted()){
             startCamera()
         }
         else {
-            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+            ActivityCompat.requestPermissions(this,
+                REQUIRED_PERMISSIONS,
+                REQUEST_CODE_PERMISSIONS
+            )
         }
         outputDirectory=getOutputDirectory()
         cameraExecutor= Executors.newSingleThreadExecutor()
