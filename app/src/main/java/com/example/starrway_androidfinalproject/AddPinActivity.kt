@@ -26,7 +26,7 @@ class AddPinActivity : AppCompatActivity() {
         etDescription.setText(MapsActivity.activePin.description)
         etTitle.setText( MapsActivity.activePin.title)
         tvPhotoPath.setText(MapsActivity.activePin.photoPath)
-        tvGPS.text = (MapsActivity.activePin.latLng.toString())
+        tvGPS.setText(MapsActivity.activePin.gpsFormatted())
 
         val minLength=7
         if (tvPhotoPath.text.toString().length>=minLength){
@@ -44,13 +44,10 @@ class AddPinActivity : AppCompatActivity() {
         }
 
         btnCamera.setOnClickListener {
-            MapsActivity.activePin =
-                Pin(
-                    etTitle.text.toString(),
-                    etDescription.text.toString(),
-                    etDate.text.toString(),
-                    tvPhotoPath.text.toString()
-                )
+            MapsActivity.activePin.title=etTitle.text.toString().trim()
+            MapsActivity.activePin.description=etDescription.text.toString().trim()
+            MapsActivity.activePin.date= etDate.text.toString().trim()
+            MapsActivity.activePin.photoPath= tvPhotoPath.text.toString().trim()
             val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
         }
@@ -68,6 +65,7 @@ class AddPinActivity : AppCompatActivity() {
                 x.title=etTitle.text.toString()
                 x.description=etDescription.text.toString()
                 x.date=etDate.text.toString()
+                x.latLng=MapsActivity.activePin.latLng
                 dbHandler.addPin(x)
                 btnCancel.performClick()
             }

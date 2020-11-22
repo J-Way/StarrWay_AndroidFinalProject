@@ -27,7 +27,7 @@
         android:layout_below="@+id/tvTitle"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="10dp"
-        android:text="GPS = (lat, lng)"
+        android:text="GPS = (, )"
         android:textSize="20dp" />
     <TextView
         android:id="@+id/tvDescription"

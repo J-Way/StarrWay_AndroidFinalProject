@@ -14,10 +14,8 @@ class Pin {
     var pk:Int=-1
     var latLng:LatLng = LatLng(0.0,0.0)
     constructor(){}
-    constructor(title:String, description:String, date: String, photoPath: String){
-        this.title=title
-        this.description=description
-        this.date=date
-        this.photoPath=photoPath
+    fun gpsFormatted():String{
+        val digits=1000
+        return "GPS = (" + Math.round(digits*this.latLng.latitude).toDouble()/digits + ", "+ Math.round(digits*this.latLng.longitude).toDouble()/digits + ")"
     }
 }
