@@ -67,8 +67,8 @@ class AddPinActivity : AppCompatActivity() {
                 x.date=etDate.text.toString()
                 x.latLng=MapsActivity.activePin.latLng
                 if (MapsActivity.activePin.dbasModification().equals("Edit")){
-                    Toast.makeText(this,"EDITOR", Toast.LENGTH_LONG).show()
-                    //dbHandler.editPin(x)
+                    //Toast.makeText(this,"EDITOR", Toast.LENGTH_LONG).show()
+                    dbHandler.editPin(x)
                 }
                 else{
                     dbHandler.addPin(x)
