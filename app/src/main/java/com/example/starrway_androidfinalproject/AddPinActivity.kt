@@ -27,7 +27,7 @@ class AddPinActivity : AppCompatActivity() {
         etTitle.setText( MapsActivity.activePin.title)
         tvPhotoPath.setText(MapsActivity.activePin.photoPath)
         tvGPS.setText(MapsActivity.activePin.gpsFormatted())
-
+        tvPrimaryKey.setText(MapsActivity.activePin.pk.toString())
         val minLength=7
         if (tvPhotoPath.text.toString().length>=minLength){
             var imgFile= File(tvPhotoPath.text.toString().substring(minLength))
@@ -68,6 +68,7 @@ class AddPinActivity : AppCompatActivity() {
                 x.latLng=MapsActivity.activePin.latLng
                 if (MapsActivity.activePin.dbasModification().equals("Edit")){
                     Toast.makeText(this,"EDITOR", Toast.LENGTH_LONG).show()
+                    //dbHandler.editPin(x)
                 }
                 else{
                     dbHandler.addPin(x)
