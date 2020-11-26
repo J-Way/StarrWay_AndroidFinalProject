@@ -208,7 +208,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         for (pin in pins){
             val markerOptions = MarkerOptions().position(pin.latLng)
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-            markerOptions.title(pin.title)
+            markerOptions.title(pin.pk.toString() + ": " + pin.title)
 
             if(pin.isLast){
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
@@ -333,17 +333,33 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     override fun onMarkerClick(p0: Marker?) : Boolean{
         alertBuilder = AlertDialog.Builder(this)
         alertBuilder.setTitle("Edit Pin: " + p0?.title)
-        alertBuilder.setPositiveButton("Yes", {dialog, which -> editPin(which)})
-        alertBuilder.setNegativeButton("No", { dialog, which -> editPin(which)})
+        alertBuilder.setPositiveButton("Yes", {dialog, which -> editPin(which, p0)})
+        alertBuilder.setNegativeButton("No", { dialog, which -> editPin(which,p0)})
         alertBuilder.setMessage("Would you like to make changes to this pin?")
         alertBuilder.show()
 
         return false
     }
 
-    fun editPin(choice: Int){
+    fun editPin(choice: Int, p0:Marker?){
         if(choice == -1){
             // start activity
+            var pinID = p0?.title?.substring(0, p0?.title.indexOf(':'))
+
+            if (pinID != null) {
+                activePin = pins[pinID.toInt() - 1]
+
+                val intent = Intent(this, AddPinActivity::class.java)
+                startActivity(intent)
+
+                Toast.makeText(this,"DEBUG: ID = " + activePin.pk, Toast.LENGTH_SHORT)
+                    .show()
+            }
+            else{
+                // not found, don't start activity
+                Toast.makeText(this, "DEBUG: ERROR COULDN'T FIND PIN", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 
