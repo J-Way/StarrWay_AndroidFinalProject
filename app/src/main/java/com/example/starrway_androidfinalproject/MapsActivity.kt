@@ -301,6 +301,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     fun addPin(choice : Int){
         // add a pin
         if(choice == -1){
+
             val intent = Intent(this, AddPinActivity::class.java)
             startActivity(intent)
         }

@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_add_pin.*
 
 class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
@@ -42,8 +43,8 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         ContentValues.put(DESCRIPTION_NAME, x.description)
         ContentValues.put(DATE_NAME, x.date)
         ContentValues.put(PATH_NAME, x.photoPath)
-        ContentValues.put(LATITUDE_NAME, 43.469)
-        ContentValues.put(LONGITUDE_NAME, -79.699)
+        ContentValues.put(LATITUDE_NAME, x.latLng.latitude)
+        ContentValues.put(LONGITUDE_NAME, x.latLng.longitude)
         val success=db.insert(MY_TABLE,null,ContentValues)
         db.close()
         return success
@@ -86,8 +87,8 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
                 x.title=cursor.getString(cursor.getColumnIndex(TITLE_NAME))
                 x.photoPath=cursor.getString(cursor.getColumnIndex(PATH_NAME))
                 x.pk=cursor.getInt(cursor.getColumnIndex(PK_NAME))
-                x.longitude=cursor.getDouble(cursor.getColumnIndex(LONGITUDE_NAME))
-                x.latitude=cursor.getDouble(cursor.getColumnIndex(LATITUDE_NAME))
+                x.latLng= LatLng(cursor.getDouble(cursor.getColumnIndex(LONGITUDE_NAME)),cursor.getDouble(cursor.getColumnIndex(LATITUDE_NAME)))
+
                 result.add(x)
             }while (cursor.moveToNext())
 

@@ -27,11 +27,6 @@
 
         </activity>
         <activity android:name=".starrway_androidfinalproject.AddPinActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -47,7 +42,13 @@
 
         <activity
             android:name=".starrway_androidfinalproject.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
