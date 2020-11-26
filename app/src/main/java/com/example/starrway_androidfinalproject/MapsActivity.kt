@@ -52,6 +52,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     private lateinit var alertBuilder: AlertDialog.Builder
     private var locationUpdateState = false
 
+    // brought in through merge
+    private lateinit var mMap: GoogleMap
+    val dbHandler:DbasHandler=DbasHandler(this)
+
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
         private const val REQUEST_CHECK_SETTINGS = 2
@@ -59,9 +63,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         public var activePin: Pin =
             Pin()
     }
-
-    // brought in through merge
-    private lateinit var mMap: GoogleMap
 
     private fun setUpMap() {
         if (ActivityCompat.checkSelfPermission(this,
@@ -83,6 +84,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
                 val currentLatLng = LatLng(location.latitude, location.longitude)
                 //placeMarkerOnMap(currentLatLng)
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+
+                var pins = dbHandler.viewAll()
+                drawExistingPins(pins)
             }
         }
     }
@@ -216,9 +220,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         return false
     }
 
-      // this is out of place
-    val dbHandler:DbasHandler=DbasHandler(this)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
@@ -230,7 +231,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         // KEEP THIS UNTIL CERTAIN IT CAN BE SAFELY REMOVED
         //
         // Create a new PlacesClient instance
-        val placesClient = Places.createClient(this)
+        Places.createClient(this)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -277,7 +278,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
             }
         }
         createLocationRequest()
-        var pinsList=dbHandler.viewAll()
+    }
+
+    fun drawExistingPins(pins : List<Pin>){
+        for (pin in pins){
+            placeMarkerOnMap(pin.latLng, BitmapDescriptorFactory.HUE_GREEN)
+        }
     }
 
     /**
