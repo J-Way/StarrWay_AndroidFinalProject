@@ -20,8 +20,8 @@ class AddPinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pin)
 
-        setTitle("Add Pin User Form")
-
+        btnAddPin.setText(MapsActivity.activePin.dbasModification() + " Pin")
+        setTitle(btnAddPin.text.toString()+ " User Form")
         etDate.setText( MapsActivity.activePin.date)
         etDescription.setText(MapsActivity.activePin.description)
         etTitle.setText( MapsActivity.activePin.title)
@@ -66,7 +66,13 @@ class AddPinActivity : AppCompatActivity() {
                 x.description=etDescription.text.toString()
                 x.date=etDate.text.toString()
                 x.latLng=MapsActivity.activePin.latLng
-                dbHandler.addPin(x)
+                if (MapsActivity.activePin.dbasModification().equals("Edit")){
+                    Toast.makeText(this,"EDITOR", Toast.LENGTH_LONG).show()
+                }
+                else{
+                    dbHandler.addPin(x)
+                }
+
                 btnCancel.performClick()
             }
 
