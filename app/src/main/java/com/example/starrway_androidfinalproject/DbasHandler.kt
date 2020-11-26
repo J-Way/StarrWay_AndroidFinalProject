@@ -87,7 +87,11 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
                 x.title=cursor.getString(cursor.getColumnIndex(TITLE_NAME))
                 x.photoPath=cursor.getString(cursor.getColumnIndex(PATH_NAME))
                 x.pk=cursor.getInt(cursor.getColumnIndex(PK_NAME))
-                x.latLng= LatLng(cursor.getDouble(cursor.getColumnIndex(LONGITUDE_NAME)),cursor.getDouble(cursor.getColumnIndex(LATITUDE_NAME)))
+
+                // when going through PR
+                // we need to feed the data as Lat then Long otherwise the values are mistaken / swapped
+                x.latLng= LatLng(cursor.getDouble(cursor.getColumnIndex(LATITUDE_NAME)),
+                    cursor.getDouble(cursor.getColumnIndex(LONGITUDE_NAME)))
 
                 result.add(x)
             }while (cursor.moveToNext())

@@ -2,6 +2,7 @@ package com.example.starrway_androidfinalproject
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
@@ -31,6 +32,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
+import java.util.prefs.Preferences
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButtonClickListener,
     GoogleMap.OnMarkerClickListener {
@@ -39,7 +41,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     - provide more comments
     - check that location and network permission are given / accessible
     - add strings to resource file
-    - load pins from db
     - have a failsafe point if location disabled
      */
 
@@ -50,7 +51,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
     private lateinit var alertBuilder: AlertDialog.Builder
+    private lateinit var pins: List<Pin>
     private var locationUpdateState = false
+
+    // brought in through merge
+    private lateinit var mMap: GoogleMap
+    val dbHandler:DbasHandler=DbasHandler(this)
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
@@ -59,9 +65,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         public var activePin: Pin =
             Pin()
     }
-
-    // brought in through merge
-    private lateinit var mMap: GoogleMap
 
     private fun setUpMap() {
         if (ActivityCompat.checkSelfPermission(this,
@@ -83,6 +86,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
                 val currentLatLng = LatLng(location.latitude, location.longitude)
                 //placeMarkerOnMap(currentLatLng)
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+
+                pins = dbHandler.viewAll()
+                pins[pins.size-1].isLast = true
+                placeMarkerOnMap(pins)
             }
         }
     }
@@ -191,6 +198,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
 
         // this is a tad inelegant, resolve later?
         activePin.latLng = location
+        val prefs = this?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(prefs.edit()){
+            putString("last_modified", activePin.toString())
+        }
+    }
+
+    fun placeMarkerOnMap(pins:List<Pin>){
+        for (pin in pins){
+            val markerOptions = MarkerOptions().position(pin.latLng)
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            markerOptions.title(pin.pk.toString() + ": " + pin.title)
+
+            if(pin.isLast){
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+            }
+
+            map.addMarker(markerOptions)
+        }
     }
 
     override fun onMyLocationButtonClick(): Boolean {
@@ -216,9 +241,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         return false
     }
 
-      // this is out of place
-    val dbHandler:DbasHandler=DbasHandler(this)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
@@ -230,7 +252,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         // KEEP THIS UNTIL CERTAIN IT CAN BE SAFELY REMOVED
         //
         // Create a new PlacesClient instance
-        val placesClient = Places.createClient(this)
+        Places.createClient(this)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -277,8 +299,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
             }
         }
         createLocationRequest()
-        var pinsList=dbHandler.viewAll()
     }
+
 
     /**
      * Manipulates the map once available.
@@ -308,6 +330,37 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         // have a toast if "no" selected?
     }
 
-    override fun onMarkerClick(p0: Marker?) = false
+    override fun onMarkerClick(p0: Marker?) : Boolean{
+        alertBuilder = AlertDialog.Builder(this)
+        alertBuilder.setTitle("Edit Pin: " + p0?.title)
+        alertBuilder.setPositiveButton("Yes", {dialog, which -> editPin(which, p0)})
+        alertBuilder.setNegativeButton("No", { dialog, which -> editPin(which,p0)})
+        alertBuilder.setMessage("Would you like to make changes to this pin?")
+        alertBuilder.show()
+
+        return false
+    }
+
+    fun editPin(choice: Int, p0:Marker?){
+        if(choice == -1){
+            // start activity
+            var pinID = p0?.title?.substring(0, p0?.title.indexOf(':'))
+
+            if (pinID != null) {
+                activePin = pins[pinID.toInt() - 1]
+
+                val intent = Intent(this, AddPinActivity::class.java)
+                startActivity(intent)
+
+                Toast.makeText(this,"DEBUG: ID = " + activePin.pk, Toast.LENGTH_SHORT)
+                    .show()
+            }
+            else{
+                // not found, don't start activity
+                Toast.makeText(this, "DEBUG: ERROR COULDN'T FIND PIN", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
 
 }
