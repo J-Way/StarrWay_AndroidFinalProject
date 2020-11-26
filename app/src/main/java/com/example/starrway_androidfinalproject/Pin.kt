@@ -14,6 +14,9 @@ class Pin {
 
     var pk:Int=-1
     var latLng:LatLng = LatLng(0.0,0.0)
+
+    var isLast:Boolean = false
+
     constructor(){}
     fun gpsFormatted():String{
         val digits=1000

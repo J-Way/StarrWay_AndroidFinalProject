@@ -2,6 +2,7 @@ package com.example.starrway_androidfinalproject
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
@@ -31,6 +32,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
+import java.util.prefs.Preferences
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButtonClickListener,
     GoogleMap.OnMarkerClickListener {
@@ -39,7 +41,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     - provide more comments
     - check that location and network permission are given / accessible
     - add strings to resource file
-    - load pins from db
     - have a failsafe point if location disabled
      */
 
@@ -50,6 +51,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
     private lateinit var alertBuilder: AlertDialog.Builder
+    private lateinit var pins: List<Pin>
     private var locationUpdateState = false
 
     // brought in through merge
@@ -85,8 +87,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
                 //placeMarkerOnMap(currentLatLng)
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
 
-                var pins = dbHandler.viewAll()
-                drawExistingPins(pins)
+                pins = dbHandler.viewAll()
+                pins[pins.size-1].isLast = true
+                placeMarkerOnMap(pins)
             }
         }
     }
@@ -195,6 +198,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
 
         // this is a tad inelegant, resolve later?
         activePin.latLng = location
+        val prefs = this?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(prefs.edit()){
+            putString("last_modified", activePin.toString())
+        }
+    }
+
+    fun placeMarkerOnMap(pins:List<Pin>){
+        for (pin in pins){
+            val markerOptions = MarkerOptions().position(pin.latLng)
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            markerOptions.title(pin.title)
+
+            if(pin.isLast){
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+            }
+
+            map.addMarker(markerOptions)
+        }
     }
 
     override fun onMyLocationButtonClick(): Boolean {
@@ -280,11 +301,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         createLocationRequest()
     }
 
-    fun drawExistingPins(pins : List<Pin>){
-        for (pin in pins){
-            placeMarkerOnMap(pin.latLng, BitmapDescriptorFactory.HUE_GREEN)
-        }
-    }
 
     /**
      * Manipulates the map once available.
@@ -314,6 +330,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         // have a toast if "no" selected?
     }
 
-    override fun onMarkerClick(p0: Marker?) = false
+    override fun onMarkerClick(p0: Marker?) : Boolean{
+        alertBuilder = AlertDialog.Builder(this)
+        alertBuilder.setTitle("Edit Pin: " + p0?.title)
+        alertBuilder.setPositiveButton("Yes", {dialog, which -> editPin(which)})
+        alertBuilder.setNegativeButton("No", { dialog, which -> editPin(which)})
+        alertBuilder.setMessage("Would you like to make changes to this pin?")
+        alertBuilder.show()
+
+        return false
+    }
+
+    fun editPin(choice: Int){
+        if(choice == -1){
+            // start activity
+        }
+    }
 
 }
