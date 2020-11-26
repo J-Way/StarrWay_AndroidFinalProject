@@ -98,7 +98,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="40dp"
-        android:text="Add Pin"
         android:layout_toRightOf="@id/btnCancel"
         android:layout_below="@+id/tvDate" />
     <TextView
@@ -108,5 +107,13 @@
         android:layout_marginTop="10dp"
         android:layout_below="@+id/btnCancel"
         android:textSize="10dp"
-        android:visibility="invisible"/>
+        android:visibility="visible"/>
+    <TextView
+        android:id="@+id/tvPrimaryKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tvPhotoPath"
+        android:textSize="20dp"
+        android:visibility="visible"/>
 </RelativeLayout>
