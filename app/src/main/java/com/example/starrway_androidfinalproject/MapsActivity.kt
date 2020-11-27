@@ -88,8 +88,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
 
                 pins = dbHandler.viewAll()
-                pins[pins.size-1].isLast = true
-                placeMarkerOnMap(pins)
+                if(pins.size >0) {
+                    pins[pins.size - 1].isLast = true
+                    placeMarkerOnMap(pins)
+                }
             }
         }
     }
@@ -275,13 +277,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
 
         val fabAddPin = findViewById<FloatingActionButton>(R.id.fabAddPin)
         fabAddPin.setOnClickListener{
-            alertBuilder = AlertDialog.Builder(this)
-            alertBuilder.setTitle("Add Pin?")
-            alertBuilder.setPositiveButton("Yes", {dialog, which -> addPin(which)})
-            alertBuilder.setNegativeButton("No", { dialog, which -> addPin(which)})
-            alertBuilder.setMessage("Would you like to add this location to your records?")
+            if(activePin.latLng != LatLng(0.0,0.0)) {
+                alertBuilder = AlertDialog.Builder(this)
+                alertBuilder.setTitle("Add Pin?")
+                alertBuilder.setPositiveButton("Yes", { dialog, which -> addPin(which) })
+                alertBuilder.setNegativeButton("No", { dialog, which -> addPin(which) })
+                alertBuilder.setMessage("Would you like to add this location to your records?")
 
-            alertBuilder.show()
+                alertBuilder.show()
+            }
+            else {
+                Toast.makeText(this, "ERROR: A pin must exist before you add it")
+            }
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
