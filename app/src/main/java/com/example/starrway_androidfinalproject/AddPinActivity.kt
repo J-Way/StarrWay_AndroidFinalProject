@@ -20,14 +20,14 @@ class AddPinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pin)
 
-        setTitle("Add Pin User Form")
-
+        btnAddPin.setText(MapsActivity.activePin.dbasModification() + " Pin")
+        setTitle(btnAddPin.text.toString()+ " User Form")
         etDate.setText( MapsActivity.activePin.date)
         etDescription.setText(MapsActivity.activePin.description)
         etTitle.setText( MapsActivity.activePin.title)
         tvPhotoPath.setText(MapsActivity.activePin.photoPath)
         tvGPS.setText(MapsActivity.activePin.gpsFormatted())
-
+        tvPrimaryKey.setText(MapsActivity.activePin.pk.toString())
         val minLength=7
         if (tvPhotoPath.text.toString().length>=minLength){
             var imgFile= File(tvPhotoPath.text.toString().substring(minLength))
@@ -66,7 +66,14 @@ class AddPinActivity : AppCompatActivity() {
                 x.description=etDescription.text.toString()
                 x.date=etDate.text.toString()
                 x.latLng=MapsActivity.activePin.latLng
-                dbHandler.addPin(x)
+                x.pk=MapsActivity.activePin.pk
+                if (MapsActivity.activePin.dbasModification().equals("Edit")){
+                    dbHandler.editPin(x)
+                }
+                else{
+                    dbHandler.addPin(x)
+                }
+
                 btnCancel.performClick()
             }
 

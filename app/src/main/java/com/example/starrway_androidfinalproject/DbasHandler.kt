@@ -38,34 +38,27 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
     }
     fun addPin(x:Pin):Long{
         val db=this.writableDatabase
-        val ContentValues= ContentValues()
-        ContentValues.put(TITLE_NAME, x.title)
-        ContentValues.put(DESCRIPTION_NAME, x.description)
-        ContentValues.put(DATE_NAME, x.date)
-        ContentValues.put(PATH_NAME, x.photoPath)
-        ContentValues.put(LATITUDE_NAME, x.latLng.latitude)
-        ContentValues.put(LONGITUDE_NAME, x.latLng.longitude)
+        val ContentValues=setContentValues(x)
         val success=db.insert(MY_TABLE,null,ContentValues)
         db.close()
         return success
     }
-    fun addTester():Long{
+    fun editPin(x:Pin):Int{
         val db=this.writableDatabase
-        val ContentValues= ContentValues()
-        ContentValues.put(TITLE_NAME, "title placeholder")
-        ContentValues.put(DESCRIPTION_NAME, "description placeholder")
-        ContentValues.put(DATE_NAME, "date placeholder")
-        ContentValues.put(PATH_NAME, "path placeholder")
-        ContentValues.put(LATITUDE_NAME, 43.469)
-        ContentValues.put(LONGITUDE_NAME, -79.699)
-        val success=db.insert(MY_TABLE,null,ContentValues)
+        val ContentValues= setContentValues(x)
+        val success=db.update(MY_TABLE,ContentValues,"${PK_NAME} = ?", arrayOf(x.pk.toString()))
         db.close()
         return success
     }
-    fun DeleteAll(){
-        val db=this.writableDatabase
-        db.execSQL("delete from " + MY_TABLE)
-        db.close()
+    fun setContentValues(x:Pin):ContentValues{
+        val result=ContentValues()
+        result.put(TITLE_NAME, x.title)
+        result.put(DESCRIPTION_NAME, x.description)
+        result.put(DATE_NAME, x.date)
+        result.put(PATH_NAME, x.photoPath)
+        result.put(LATITUDE_NAME, x.latLng.latitude)
+        result.put(LONGITUDE_NAME, x.latLng.longitude)
+        return result
     }
     fun viewAll():List<Pin>{
         val result:ArrayList<Pin> =ArrayList<Pin>()

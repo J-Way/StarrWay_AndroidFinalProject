@@ -22,4 +22,8 @@ class Pin {
         val digits=1000
         return "GPS = (" + Math.round(digits*this.latLng.latitude).toDouble()/digits + ", "+ Math.round(digits*this.latLng.longitude).toDouble()/digits + ")"
     }
+    fun dbasModification():String{
+        if (this.pk>=0) return "Edit"
+        else return "Add"
+    }
 }
