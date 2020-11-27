@@ -1,5 +1,6 @@
 package com.example.starrway_androidfinalproject
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_add_pin.*
 import java.io.File
 
 
-class AddPinActivity : AppCompatActivity() {
+class AddPinActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     @RequiresApi(Build.VERSION_CODES.O)
     val dbHandler:DbasHandler=DbasHandler(this)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +79,23 @@ class AddPinActivity : AppCompatActivity() {
             }
 
         }
+        btnDatePicker.setOnClickListener {
+            DatePickerDialog(this,this,2020,3,9).show()
+
+        }
+    }
+
+    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val separator:String="-"
+        var yearString:String=year.toString()
+
+        var monthString:String=month.toString()
+        if(monthString.length==1) monthString="0"+monthString
+
+        var dayOfMonthString=dayOfMonth.toString()
+        if (dayOfMonthString.length==1) dayOfMonthString="0"+dayOfMonthString
+
+        etDate.setText(yearString+separator+monthString+separator+dayOfMonthString)
     }
 
 }
