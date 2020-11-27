@@ -79,18 +79,18 @@
     <EditText
         android:editable="false"
         android:id="@+id/etDate"
-        android:layout_width="250dp"
+        android:layout_width="230dp"
         android:layout_height="45dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="60dp"
+        android:layout_marginRight="80dp"
         android:layout_below="@+id/imgPath"
         android:background="@drawable/common_google_signin_btn_text_light_normal_background"/>
     <Button
         android:id="@+id/btnDatePicker"
         android:layout_width="60dp"
         android:layout_alignParentRight="true"
-        android:layout_height="45dp"
-        android:text="X"
+        android:layout_height="60dp"
+        android:background="@drawable/calendar_symbol"
         android:layout_below="@+id/imgPath" />
     <Button
         android:id="@+id/btnCancel"
@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Cancel"
-        android:layout_below="@+id/tvDate" />
+        android:layout_below="@+id/btnDatePicker" />
     <Button
         android:id="@+id/btnAddPin"
         android:layout_width="160dp"
@@ -106,7 +106,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="40dp"
         android:layout_toRightOf="@id/btnCancel"
-        android:layout_below="@+id/tvDate" />
+        android:layout_below="@+id/btnDatePicker" />
     <TextView
         android:id="@+id/tvPhotoPath"
         android:layout_width="match_parent"
