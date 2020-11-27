@@ -287,7 +287,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
                 alertBuilder.show()
             }
             else {
-                Toast.makeText(this, "ERROR: A pin must exist before you add it")
+                Toast.makeText(this, "ERROR: A pin must exist before you add it", Toast.LENGTH_LONG).show()
             }
         }
 
