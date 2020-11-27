@@ -46,7 +46,7 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
     fun editPin(x:Pin):Int{
         val db=this.writableDatabase
         val ContentValues= setContentValues(x)
-        val success=db.update(MY_TABLE,ContentValues,"${PK_NAME} = 1", arrayOf())
+        val success=db.update(MY_TABLE,ContentValues,"${PK_NAME} = ?", arrayOf(x.pk.toString()))
         db.close()
         return success
     }
