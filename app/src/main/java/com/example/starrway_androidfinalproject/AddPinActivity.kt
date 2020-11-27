@@ -17,6 +17,9 @@ import java.io.File
 class AddPinActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     @RequiresApi(Build.VERSION_CODES.O)
     val dbHandler:DbasHandler=DbasHandler(this)
+    companion object{
+        private val dateSeparator:String="-"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pin)
@@ -80,22 +83,25 @@ class AddPinActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
         }
         btnDatePicker.setOnClickListener {
-            DatePickerDialog(this,this,2020,3,9).show()
-
+            val dateString=etDate.text.toString().trim()
+            val year=stringToDatePart(dateString,0)
+            val month=stringToDatePart(dateString,1)
+            val dayOfMonth=stringToDatePart(dateString,2)
+            DatePickerDialog(this,this,year,month-1,dayOfMonth).show()
         }
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        val separator:String="-"
-        var yearString:String=year.toString()
-
-        var monthString:String=month.toString()
-        if(monthString.length==1) monthString="0"+monthString
-
-        var dayOfMonthString=dayOfMonth.toString()
-        if (dayOfMonthString.length==1) dayOfMonthString="0"+dayOfMonthString
-
-        etDate.setText(yearString+separator+monthString+separator+dayOfMonthString)
+        etDate.setText(datePartToString(year)+ dateSeparator+datePartToString(1+month)+ dateSeparator+datePartToString(dayOfMonth))
+    }
+    fun datePartToString(datePartValue:Int):String{
+        var result:String=datePartValue.toString()
+        if (result.length==1) result="0"+result
+        return result
+    }
+    fun stringToDatePart(dateString:String,datePartIndex:Int):Int{
+        val dateParts=dateString.split(dateSeparator).toTypedArray()
+        return dateParts[datePartIndex].toInt()
     }
 
 }
