@@ -89,6 +89,9 @@ class AddPinActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
             val dayOfMonth=stringToDatePart(dateString,2)
             DatePickerDialog(this,this,year,month-1,dayOfMonth).show()
         }
+        etDate.setOnClickListener {
+            Toast.makeText(this,"Users cannot change the date by typing it manually. Please use the date picker button to change the date.", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
