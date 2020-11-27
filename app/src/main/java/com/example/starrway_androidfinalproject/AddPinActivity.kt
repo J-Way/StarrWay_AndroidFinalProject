@@ -7,8 +7,11 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.example.R
 import kotlinx.android.synthetic.main.activity_add_pin.*
 import java.io.File
@@ -91,6 +94,12 @@ class AddPinActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         }
         etDate.setOnClickListener {
             Toast.makeText(this,"Users cannot change the date by typing it manually. Please use the date picker button to change the date.", Toast.LENGTH_LONG).show()
+        }
+        if(MapsActivity.activePin.dbasModification().equals("Edit")){
+            btnDeletePin.setVisibility(View.VISIBLE)
+        }
+        else {
+            btnDeletePin.setVisibility(View.INVISIBLE)
         }
     }
 

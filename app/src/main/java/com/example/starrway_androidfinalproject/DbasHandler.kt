@@ -60,6 +60,12 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         result.put(LONGITUDE_NAME, x.latLng.longitude)
         return result
     }
+    fun deletePin(pk:Int):Int{
+        val db=this.writableDatabase
+        val success=db.delete(MY_TABLE,"${PK_NAME} = ?", arrayOf(pk.toString()))
+        db.close()
+        return success
+    }
     fun viewAll():List<Pin>{
         val result:ArrayList<Pin> =ArrayList<Pin>()
         val db=this.writableDatabase
