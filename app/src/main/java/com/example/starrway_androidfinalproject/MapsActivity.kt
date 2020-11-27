@@ -39,9 +39,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
 
     /*TODO
     - provide more comments
-    - check that location and network permission are given / accessible
-    - add strings to resource file
-    - have a failsafe point if location disabled
+    - remove debug toasts
+    - keep track of last modified / added pin with SharedPrefs
+    - clear red pins if multiple exist
      */
 
 
@@ -331,13 +331,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     }
 
     override fun onMarkerClick(p0: Marker?) : Boolean{
-        alertBuilder = AlertDialog.Builder(this)
-        alertBuilder.setTitle("Edit Pin: " + p0?.title)
-        alertBuilder.setPositiveButton("Yes", {dialog, which -> editPin(which, p0)})
-        alertBuilder.setNegativeButton("No", { dialog, which -> editPin(which,p0)})
-        alertBuilder.setMessage("Would you like to make changes to this pin?")
-        alertBuilder.show()
 
+        if(p0?.title != null) {
+            alertBuilder = AlertDialog.Builder(this)
+            alertBuilder.setTitle("Edit Pin: " + p0?.title)
+            alertBuilder.setPositiveButton("Yes", { dialog, which -> editPin(which, p0) })
+            alertBuilder.setNegativeButton("No", { dialog, which -> editPin(which, p0) })
+            alertBuilder.setMessage("Would you like to make changes to this pin?")
+            alertBuilder.show()
+        }
+        else{
+            Toast.makeText(this, "ERROR: you can't modify a pin that hasn't yet been added", Toast.LENGTH_LONG)
+                .show()
+        }
         return false
     }
 
