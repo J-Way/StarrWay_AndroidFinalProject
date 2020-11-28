@@ -360,7 +360,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
             var pinID = p0?.title?.substring(0, p0?.title.indexOf(':'))
 
             if (pinID != null) {
-                activePin = pins[pinID.toInt() - 1]
+                activePin = dbHandler.viewSingle(pinID.toInt())
 
                 val intent = Intent(this, AddPinActivity::class.java)
                 startActivity(intent)

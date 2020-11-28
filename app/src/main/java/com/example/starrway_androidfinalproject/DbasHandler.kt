@@ -66,6 +66,16 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
         db.close()
         return success
     }
+    fun viewSingle(pk:Int):Pin{
+        val result=Pin()
+        val all=viewAll()
+        for (x in all){
+            if(x.pk==pk){
+                return x
+            }
+        }
+        return result
+    }
     fun viewAll():List<Pin>{
         val result:ArrayList<Pin> =ArrayList<Pin>()
         val db=this.writableDatabase
