@@ -2,7 +2,6 @@ package com.example.starrway_androidfinalproject
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.android.gms.maps.model.LatLng
-import java.lang.Exception
 import java.time.LocalDate
 
 class Pin {
