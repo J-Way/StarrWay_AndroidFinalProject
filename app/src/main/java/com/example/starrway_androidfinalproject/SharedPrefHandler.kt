@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.example.R
 
 class SharedPrefHandler(val context:Context) {
+    // initial prefs setup
     private val PREFS_NAME : String = context?.getString(R.string.pref_file)
     private val sharedPref: SharedPreferences = context?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -16,11 +17,11 @@ class SharedPrefHandler(val context:Context) {
         editor!!.commit()
     }
 
-
     fun getValueLong(KEY_NAME: String): Long? {
         return sharedPref.getLong(KEY_NAME, -1)
     }
 
+    // not currently used as there isn't an official delete / clear cache implemented
     fun clearSharedPreference() {
         val editor: SharedPreferences.Editor = sharedPref.edit()
 

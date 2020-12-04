@@ -2,13 +2,11 @@ package com.example.starrway_androidfinalproject
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.google.android.gms.maps.model.LatLng
-import kotlinx.android.synthetic.main.activity_add_pin.*
 
 class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
     companion object{

@@ -5,13 +5,12 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.DatePicker
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
+import androidx.appcompat.app.AppCompatActivity
 import com.example.R
 import kotlinx.android.synthetic.main.activity_add_pin.*
 import java.io.File

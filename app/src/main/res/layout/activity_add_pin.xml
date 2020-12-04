@@ -14,15 +14,15 @@
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title:"
+        android:text="@string/add_title"
         android:textSize="25dp" />
     <EditText
         android:id="@+id/etTitle"
         android:layout_width="300dp"
         android:layout_height="45dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:hint="required"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:hint="@string/add_etTitle_hint"
         android:background="@drawable/common_google_signin_btn_text_light_normal_background"/>
 
     <TextView
@@ -30,15 +30,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvTitle"
-        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
-        android:text="GPS = (, )"
+        android:text="@string/add_tvGPS_text"
         android:textSize="20dp" />
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Description:"
+        android:text="@string/add_tvDesc"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/tvGPS"
         android:textSize="25dp" />
@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/common_google_signin_btn_text_light_normal_background"
-        android:gravity="top|left"
+        android:gravity="top|start"
         android:inputType="textMultiLine"
         android:overScrollMode="always"
         android:scrollbarStyle="insideInset"
@@ -61,9 +61,9 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="40dp"
-        android:layout_marginLeft="60dp"
-        android:layout_alignParentLeft="true"
-        android:text="Take Photo"
+        android:layout_marginStart="60dp"
+        android:layout_alignParentStart="true"
+        android:text="@string/add_btnCamera"
         android:layout_below="@+id/etDescription" />
     <ImageView
         android:id="@+id/imgPath"
@@ -71,14 +71,14 @@
         android:layout_width="113dp"
         android:rotation="90"
         android:layout_height="200dp"
-        android:layout_marginRight="50dp"
-        android:layout_alignParentRight="true"
+        android:layout_marginEnd="50dp"
+        android:layout_alignParentEnd="true"
         android:src="@drawable/empty"/>
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Date:"
+        android:text="@string/add_tvDate"
         android:textSize="25dp"
         android:layout_below="@+id/imgPath"/>
     <EditText
@@ -86,14 +86,14 @@
         android:id="@+id/etDate"
         android:layout_width="230dp"
         android:layout_height="45dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="80dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="80dp"
         android:layout_below="@+id/imgPath"
         android:background="@drawable/common_google_signin_btn_text_light_normal_background"/>
     <Button
         android:id="@+id/btnDatePicker"
         android:layout_width="60dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_height="60dp"
         android:background="@drawable/calendar_symbol"
         android:layout_below="@+id/imgPath" />
@@ -102,7 +102,7 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Cancel"
+        android:text="@string/add_btnCancel"
         android:layout_below="@+id/btnDatePicker" />
 
     <Button
@@ -110,8 +110,8 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="40dp"
-        android:layout_toRightOf="@id/btnCancel"
+        android:layout_marginStart="40dp"
+        android:layout_toEndOf="@id/btnCancel"
         android:layout_below="@+id/btnDatePicker" />
     <TextView
         android:id="@+id/tvPhotoPath"
@@ -135,8 +135,8 @@
         android:textColor="@color/quantum_white_100"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
+        android:layout_marginStart="100dp"
         android:layout_below="@+id/tvPrimaryKey"
-        android:text="Delete Permanently"/>
+        android:text="@string/add_btnDeletePin"/>
 </RelativeLayout>
 </ScrollView>

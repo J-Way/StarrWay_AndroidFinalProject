@@ -2,6 +2,18 @@
     <string name="app_name">StarrWay_AndroidFinalProject</string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="add_title"> Title:</string>
+    <string name="add_etTitle_hint"> required </string>
+    <string name="add_tvGPS_text"> GPS = (, ) </string>
+    <string name="add_tvDesc"> Description:</string>
+    <string name="add_btnCamera"> Take Photo </string>
+    <string name="add_tvDate"> Date:</string>
+    <string name="add_btnCancel">Cancel</string>
+    <string name="add_btnDeletePin"> Delete Permanently </string>
+
+    <string name="camera_take_photo"> Take Photo</string>
+    <string name="camera_cancel"> Cancel</string>
+
     <string name="pref_file"> starr_way_prefs_file</string>
     <string name="last_modified_key">LAST_EDITED</string>
 </resources>
