@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">StarrWay_AndroidFinalProject</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="pref_file"> starr_way_prefs_file</string>
+    <string name="last_modified_key">LAST_EDITED</string>
 </resources>

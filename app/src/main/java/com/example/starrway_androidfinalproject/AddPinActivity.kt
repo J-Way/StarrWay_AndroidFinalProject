@@ -20,12 +20,15 @@ import java.io.File
 class AddPinActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     @RequiresApi(Build.VERSION_CODES.O)
     val dbHandler:DbasHandler=DbasHandler(this)
+    lateinit var sharedPrefHandler:SharedPrefHandler
     companion object{
         private val dateSeparator:String="-"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_pin)
+
+        sharedPrefHandler = SharedPrefHandler(this)
 
         btnAddPin.setText(MapsActivity.activePin.dbasModification() + " Pin")
         setTitle(btnAddPin.text.toString()+ " User Form")
@@ -75,10 +78,14 @@ class AddPinActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
                 x.latLng=MapsActivity.activePin.latLng
                 x.pk=MapsActivity.activePin.pk
                 if (MapsActivity.activePin.dbasModification().equals("Edit")){
-                    dbHandler.editPin(x)
+                    val success = dbHandler.editPin(x)
+                    if(success == 1){
+                        sharedPrefHandler.saveLastEdited(this?.getString(R.string.last_modified_key), x.pk.toLong())
+                    }
                 }
                 else{
-                    dbHandler.addPin(x)
+                    val id = dbHandler.addPin(x)
+                    sharedPrefHandler.saveLastEdited(this?.getString(R.string.last_modified_key), id)
                 }
 
                 btnCancel.performClick()

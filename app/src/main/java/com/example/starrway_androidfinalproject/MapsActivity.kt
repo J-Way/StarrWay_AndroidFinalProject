@@ -52,6 +52,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     private lateinit var locationRequest: LocationRequest
     private lateinit var alertBuilder: AlertDialog.Builder
     private lateinit var pins: List<Pin>
+    lateinit var sharedPrefHandler:SharedPrefHandler
     private var locationUpdateState = false
 
     // brought in through merge
@@ -84,12 +85,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
-                //placeMarkerOnMap(currentLatLng)
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
 
                 pins = dbHandler.viewAll()
                 if(pins.size >0) {
-                    pins[pins.size - 1].isLast = true
                     placeMarkerOnMap(pins)
                 }
             }
@@ -198,22 +196,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(colour))
         map.addMarker(markerOptions)
 
-        // this is a tad inelegant, resolve later?
-        activePin.latLng = location
-        val prefs = this?.getPreferences(Context.MODE_PRIVATE) ?: return
-        with(prefs.edit()){
-            putString("last_modified", activePin.toString())
-        }
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 12f))
     }
 
     fun placeMarkerOnMap(pins:List<Pin>){
         for (pin in pins){
+            val lastModified = sharedPrefHandler.getValueLong(this?.getString(R.string.last_modified_key))
             val markerOptions = MarkerOptions().position(pin.latLng)
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
             markerOptions.title(pin.pk.toString() + ": " + pin.title)
 
-            if(pin.isLast){
+            if(pin.pk.toLong() != lastModified){
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            }
+            else{
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(pin.latLng, 12f))
             }
 
             map.addMarker(markerOptions)
@@ -249,7 +246,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
 
         // Initialize the SDK
         Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
-
+        sharedPrefHandler = SharedPrefHandler(this)
         //
         // KEEP THIS UNTIL CERTAIN IT CAN BE SAFELY REMOVED
         //

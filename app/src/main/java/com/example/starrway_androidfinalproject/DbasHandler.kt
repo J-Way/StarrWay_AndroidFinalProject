@@ -2,6 +2,7 @@ package com.example.starrway_androidfinalproject
 
 import android.content.ContentValues
 import android.content.Context
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
@@ -24,12 +25,10 @@ class DbasHandler (context: Context): SQLiteOpenHelper(context, DATABASE_NAME, n
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-
         val CREATE_TABLE=("CREATE TABLE " + MY_TABLE +"("
                 + PK_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TITLE_NAME+ " TEXT, "+ DESCRIPTION_NAME+ " TEXT, "
                 + LATITUDE_NAME + " REAL, "+ LONGITUDE_NAME + " REAL, "+ DATE_NAME + " TEXT, "+ PATH_NAME+ " TEXT)")
         db?.execSQL(CREATE_TABLE)
-
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
