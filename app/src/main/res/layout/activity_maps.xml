@@ -29,6 +29,6 @@
         android:layout_gravity="bottom|start"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="30dp"
-        android:src="@android:drawable/ic_input_get"/>
+        android:src="@android:drawable/ic_input_add"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
