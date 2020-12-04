@@ -228,7 +228,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-
+        setTitle("The GeoGallery")
         // Initialize the SDK
         Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
         sharedPrefHandler = SharedPrefHandler(this)
@@ -344,7 +344,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
                 val intent = Intent(this, AddPinActivity::class.java)
                 startActivity(intent)
 
-                Toast.makeText(this,"DEBUG: ID = " + activePin.pk, Toast.LENGTH_SHORT)
+                Toast.makeText(this,"Now editting pin number " + activePin.pk, Toast.LENGTH_LONG)
                     .show()
             }
             else{
