@@ -26,6 +26,7 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_maps.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButtonClickListener,
     GoogleMap.OnMarkerClickListener {
@@ -251,6 +252,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMyLocationButton
             startActivityForResult(intent,
                 AUTOCOMPLETE_REQUEST_CODE
             )
+        }
+        fabPinColours.setOnClickListener {
+            
         }
 
         val fabAddPin = findViewById<FloatingActionButton>(R.id.fabAddPin)
