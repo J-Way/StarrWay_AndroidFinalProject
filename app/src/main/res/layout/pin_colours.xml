@@ -5,8 +5,51 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
     <TextView
+        android:id="@+id/tvPinColours0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="hola"
+        android:text="Here is what each pin colour represents:"
         android:textSize="25dp" />
+    <ImageView
+        android:id="@+id/imgRedPin"
+        android:layout_below="@id/tvPinColours0"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:src="@drawable/redpin"/>
+    <TextView
+        android:id="@+id/tvRedPin"
+        android:layout_width="match_parent"
+        android:layout_toRightOf="@id/imgRedPin"
+        android:layout_below="@id/tvPinColours0"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="pin selected but not yet added" />
+    <ImageView
+        android:id="@+id/imgGreenPin"
+        android:layout_below="@id/imgRedPin"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:src="@drawable/greenpin"/>
+    <TextView
+        android:id="@+id/tvGreenPin"
+        android:layout_width="match_parent"
+        android:layout_below="@id/imgRedPin"
+        android:layout_toRightOf="@id/imgGreenPin"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="added pin" />
+    <ImageView
+        android:id="@+id/imgBluePin"
+        android:layout_below="@id/imgGreenPin"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:src="@drawable/bluepin" />
+    <TextView
+        android:id="@+id/tvBluePin"
+        android:layout_width="match_parent"
+        android:layout_below="@id/imgGreenPin"
+        android:layout_toRightOf="@id/imgBluePin"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="most recently added/editted pin" />
 </RelativeLayout>
