@@ -104,7 +104,7 @@ class AddPinActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         if(MapsActivity.activePin.dbasModification().equals("Edit")){
             btnDeletePin.setVisibility(View.VISIBLE)
             btnDeletePin.setOnClickListener {
-                //dbHandler.deletePin(MapsActivity.activePin.pk)
+                dbHandler.deletePin(MapsActivity.activePin.pk)
                 Toast.makeText(this,"Pin #"+MapsActivity.activePin.pk.toString()+" successfully deleted!", Toast.LENGTH_LONG).show()
                 btnCancel.performClick()
             }
